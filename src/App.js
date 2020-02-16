@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import Button from '@material-ui/core/Button';
 import NavBar from './components/Navbar'
 import Wardrobe from './components/Wardrobe';
-import ViewSets from './components/ViewSets';
+import TodaysSet from './components/TodaysSet';
 import {BrowserRouter , Route, Switch} from "react-router-dom";
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
       <div className = "bg">  
         <NavBar />
        <Route path = "/Wardrobe" component ={Wardrobe}/>
-       <Route path = "/ViewSets" component ={ViewSets}/>
+       <Route path = "/TodaysSet" component ={TodaysSet}/>
 
       </div>
     </BrowserRouter>

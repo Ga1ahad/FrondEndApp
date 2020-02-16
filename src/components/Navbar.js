@@ -1,8 +1,6 @@
  import React from 'react';
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import MenuIcon from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
@@ -11,6 +9,19 @@ import Menu from '@material-ui/core/Menu';
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Typography from "@material-ui/core/Typography";
 import {BrowserRouter , Route, Switch, Link} from "react-router-dom";
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
+import Drawer from '@material-ui/core/Drawer';
+import WorkRoundedIcon from '@material-ui/icons/WorkRounded';
+import CalendarTodayRoundedIcon from '@material-ui/icons/CalendarTodayRounded';
+import AddRoundedIcon from '@material-ui/icons/AddRounded';
+import TodayRoundedIcon from '@material-ui/icons/TodayRounded';
+import CollectionsRoundedIcon from '@material-ui/icons/CollectionsRounded';
 
 //zmiana
 const useStyles = makeStyles(theme => ({
@@ -33,67 +44,111 @@ const NavBar = () => {
     const [auth, setAuth] = React.useState(true);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+    const [state, setState] = React.useState({
+      top: false,
+      left: false,
+      bottom: false,
+      right: false,
+    });
+    const toggleDrawer = (side, open) => event => {
+      if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+        return;
+      }
+  
+      setState({ ...state, [side]: open });
+    };
+  
   const handleClose = () => {
     setAnchorEl(null);
   };
+  
   const handleMenu = event => {
     setAnchorEl(event.currentTarget);
   };
+  
+
+  const sideList = side => (
+    <div
+      className={classes.list}
+      role="presentation"
+      onClick={toggleDrawer(side, false)}
+      onKeyDown={toggleDrawer(side, false)}
+    >
+    
+        
+        <List>
+        <ListItem button component={Link} to="/Wardrobe">      
+        <ListItemIcon> <CollectionsRoundedIcon /></ListItemIcon>
+            <ListItemText primary={'Wardrobe'} />
+        </ListItem>
+          
+        <ListItem button component={Link} to="/Suitcases">   
+        <ListItemIcon> <WorkRoundedIcon /></ListItemIcon>
+  
+            <ListItemText primary={'Suitcases'} />
+        </ListItem>
+
+        <ListItem button component={Link} to="/TodaysSet">    
+        <ListItemIcon> <TodayRoundedIcon /></ListItemIcon>   
+            <ListItemText primary={"Today's set"} />
+        </ListItem>
+
+        <ListItem button component={Link} to="/PlanTrip">      
+        <ListItemIcon> <CalendarTodayRoundedIcon /></ListItemIcon>
+            <ListItemText primary={'Plan Trip'} />
+        </ListItem>
+
+        <ListItem button component={Link} to="/AddCloth">   
+        <ListItemIcon> <AddRoundedIcon /></ListItemIcon>
+     
+            <ListItemText primary={'Add Cloth'} />
+        </ListItem>
+
+        </List>
+    </div>
+  );
+
+  const fullList = side => (
+    <div
+      className={classes.fullList}
+      role="presentation"
+      onClick={toggleDrawer(side, false)}
+      onKeyDown={toggleDrawer(side, false)}
+    >
+      <List>
+        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+    </div>
+  );
 
     return(   
         <div>
             
             <AppBar position="static">
             <Toolbar>
-                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                    <IconButton onClick={toggleDrawer('left', true)}   edge="start" className={classes.menuButton} color="inherit" aria-label="menu" >
                          <MenuIcon />
                     </IconButton>
-                    <Grid item xs={3} md={'auto'}>
-                 
-                              <Link to="/Wardrobe">
-                                  <Button
-                                            variant="contained"
-                                            color="initial"
-                                            size="large"  
-                                >Wardrobe</Button>
-                            </Link>
-                            
-                            <Link to="/ViewSets">
-                                <Button
-                                            variant="contained"
-                                            color="initial"
-                                            size="large" 
-                                >View sets</Button>
-                            </Link>
-      
-                            <Link to="/ViewSetForADay">
-                              <Button
-                                          variant="contained"
-                                          color="initial"
-                                          size="large"  
-                              >View set for a day</Button>
-                            </Link>
 
-                            <Link to="/PlanTrip">
-                                <Button
-                                            variant="contained"
-                                            color="initial"
-                                            size="large"  
-                                >Plan trip</Button>
-                            </Link>
-
-                            <Link to="/AddCloth">
-                                <Button
-                                            variant="contained"
-                                            color="initial"
-                                            size="large"  
-                                >Add cloth</Button>
-                            </Link>
-                     
-                           
-                     
-                
-                   </Grid>
+                    <Drawer open={state.left} onClose={toggleDrawer('left', false)}>
+        {sideList('left')}
+      </Drawer> 
+                    
+               
                 <Typography variant="h3" className={classes.title} >
 
                 </Typography>
@@ -140,6 +195,7 @@ const NavBar = () => {
           
                         
                 </Toolbar>
+                
             </AppBar>
         </div>
     )

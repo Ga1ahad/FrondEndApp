@@ -7,7 +7,7 @@ import { Sets } from "./Sets";
 
 
 
-export default function ViewSets() {
+export default function TodaysSet() {
     
 const [currentImage, setCurrentImage] = useState(0);
 const [viewerIsOpen, setViewerIsOpen] = useState(false);
