@@ -1,6 +1,8 @@
 import React from "react";
 
 export default class FetchSuitcase extends React.Component {
+
+   
   state = {
     loading: true,
     suitcase: []
@@ -9,7 +11,8 @@ export default class FetchSuitcase extends React.Component {
 
 
   async componentDidMount() {
-    const url = "http://localhost:58392/api/users/1/Suitcase";
+    var x = 1;
+    const url = "http://localhost:58392/api/users/"+x+"/Suitcase";
     const response = await fetch(url);
     const data = await response.json();
     this.setState({ suitcase: data, loading: false });
